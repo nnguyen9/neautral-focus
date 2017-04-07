@@ -89,7 +89,9 @@
 			loadImage("{% static 'images/foo.png' %}");
 			updateImage("{% static 'images/mask.png' %}", "{% static 'images/filtered.png' %}");
 			
-			saveImage = function() {
+			// Event is here because the click of jquery automatically sends the first parameter as an event object
+			// If no longer using the click then remove the first parameter
+			saveImage = function(event, file_name = 'image1.png') {
 				
 				imageData = canvas.toDataURL();
 				imageDataSend = imageData.replace("data:image/png;base64,", "")
@@ -100,7 +102,7 @@
 					data:{
 						'image': imageDataSend,
 						csrfmiddlewaretoken: '{{ csrf_token }}',
-						'file_name': 'image.png'
+						'file_name': file_name
 					},
 					success: function(data) {
 						alert(data)

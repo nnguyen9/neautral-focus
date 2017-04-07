@@ -17,14 +17,6 @@ def save_image(request):
 	imageURI = request.POST.get('image')
 	file_name = request.POST.get('file_name')
 
-	# image_str = cStringIO.StringIO(imageURI)
-
-	# pic = cStringIO.StringIO()
-	# image = Image.open(image_str)
-	# image.save(settings.STATIC_ROOT + "/textImage3.png", image.format, quality = 100)
-
-	print imageURI
-
 	# pic.seek(0)
 	loc = settings.STATIC_ROOT + "/images/" + file_name
 

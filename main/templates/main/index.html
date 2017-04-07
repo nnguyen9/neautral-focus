@@ -6,19 +6,111 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r70/three.min.js"></script>
       {% block css %}    
         <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
       {% endblock %}
       {% block js %}
         <!-- WebGazer.js library -->
         <script src="{% static 'js/webgazer.js' %}" type="text/javascript"></script>
+        <script src="{% static 'js/fabric.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'js/caman.full.min.js' %}" type="text/javascript"></script>
+		<script src="{% static 'js/canvasmask.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
       {% endblock %}
     </head>
 
     <body>
+		
+	  <script>
+		$(document).ready(function() {
+			
+			var $pred = $('#prediction-button');
+
+			// Here is where we put to run after the document has loaded
+
+			var canvas = document.getElementById('myCanvas');
+			var ctx = canvas.getContext('2d');
+			var img = new Image();
+
+			// Loads the initial image
+			loadImage = function(src){
+
+				img.crossOrigin = '';
+				img.src = src;
+
+				img.onload = function() {
+					canvas.width = img.width;
+					canvas.height = img.height;
+					ctx.drawImage(img, 0, 0, img.width, img.height);
+				}
+			}
+			
+			$pred.on('click', function(e) {
+				var dataURL = canvas.toDataURL("image/png");
+			});
+			
+			// Applies the necessary filter and mask to the image
+			updateImage = function(mask, filter){
+				
+				var filtered = document.createElement('img');
+				filtered.src = filter;
+				
+				filtered.onload = function() {
+					
+					var newImg = document.createElement('img');
+					newImg.src = img.src;
+
+					newImg.onload = function() {
+						var width  = newImg.width;
+						var height = newImg.height;
+
+						var masked = document.createElement('img');
+						masked.src = mask;
+						masked.onload = function() {
+							canvas.width  = width;
+							canvas.height = height;
+
+
+							ctx.drawImage(masked, 0, 0, width, height);
+							// To highlight low-focus: source-out
+							// To detract from high focus: source-in
+							ctx.globalCompositeOperation = 'source-out';
+							ctx.drawImage(filtered, 0, 0);
+							ctx.globalCompositeOperation = 'destination-over';
+							ctx.drawImage(img, 0, 0);
+
+							img.src = canvas.toDataURL();
+						}
+					}
+				}	
+			}
+			
+			loadImage("{% static 'images/foo.png' %}");
+			updateImage("{% static 'images/mask.png' %}", "{% static 'images/filtered.png' %}");
+			
+			saveImage = function() {
+				
+				imageData = canvas.toDataURL();
+				
+				$.ajax({
+					type: "POST",
+					url: "/regiter_respuesta_agilidad/",
+					data:{
+						'image': dataURL1,
+					}
+				});
+			}
+			
+
+		});	
+		
+	  </script>
       
       <button id="prediction-button" type="button">Get Prediction</button>
+
+      <canvas id="myCanvas"></canvas>
+		
     </body>
 
 </html>

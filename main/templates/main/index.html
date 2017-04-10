@@ -50,6 +50,46 @@
 				var dataURL = canvas.toDataURL("image/png");
 			});
 			
+			// Event is here because the click of jquery automatically sends the first parameter as an event object
+			// If no longer using the click then remove the first parameter
+			saveImage = function(file_name) {
+				
+				imageData = canvas.toDataURL();
+				imageDataSend = imageData.replace("data:image/png;base64,", "")
+				
+				$.ajax({
+					type: "POST",
+					url: "{% url 'save_image' %}",
+					data:{
+						'image': imageDataSend,
+						csrfmiddlewaretoken: '{{ csrf_token }}',
+						'file_name': file_name
+					},
+					success: function(data) {
+						alert(data)
+					}
+				});
+			}
+			
+			combine_images = function(im1, im2, mask) {
+				
+				$.ajax({
+					type: "POST",
+					url: "{% url 'combine_images' %}",
+					data:{
+						csrfmiddlewaretoken: '{{ csrf_token }}',
+						'im1_file': im1,
+						'im2_file': im2,
+						'mask_file': mask,
+					},
+					success: function(data) {
+						alert(data)
+					}
+				});
+			}
+			
+			combine_images("foo.png", "filtered.png", "mask.png");
+			
 			// Applies the necessary filter and mask to the image
 			updateImage = function(mask, filter){
 				
@@ -83,36 +123,17 @@
 							img.src = canvas.toDataURL();
 						}
 					}
-				}	
+				}
+				
+				saveImage("image2.png");
 			}
 			
 			loadImage("{% static 'images/foo.png' %}");
 			updateImage("{% static 'images/mask.png' %}", "{% static 'images/filtered.png' %}");
 			
-			// Event is here because the click of jquery automatically sends the first parameter as an event object
-			// If no longer using the click then remove the first parameter
-			saveImage = function(event, file_name = 'image1.png') {
-				
-				imageData = canvas.toDataURL();
-				imageDataSend = imageData.replace("data:image/png;base64,", "")
-				
-				$.ajax({
-					type: "POST",
-					url: "{% url 'save_image' %}",
-					data:{
-						'image': imageDataSend,
-						csrfmiddlewaretoken: '{{ csrf_token }}',
-						'file_name': file_name
-					},
-					success: function(data) {
-						alert(data)
-					}
-				});
-			}
-
-			// HERE IS WHERE THE IMAGE SAVE IS CALLED WHEN THE BUTTON IS CLICKED
-			$('#prediction-button').click(saveImage)
-			
+			Caman('#myCanvas', img, function() {
+			  this.brightness(20).render();
+			});
 
 		});	
 		

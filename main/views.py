@@ -5,6 +5,7 @@ from django.conf import settings
 
 import cStringIO
 from PIL import Image
+from PIL import ImageFilter
 
 import re
 import os, base64
@@ -26,3 +27,19 @@ def save_image(request):
 	img_file.close()
 
 	return HttpResponse('Image saved to: ' + loc)
+
+# Combine the images and save as the first image
+def combine_images(request):
+	im1_file = request.POST.get('im1_file');
+	im2_file = request.POST.get('im2_file');
+	mask_file = request.POST.get('mask_file');
+	
+	im1 = Image.open(settings.STATIC_ROOT + "/images/" + im1_file);
+	im2 = Image.open(settings.STATIC_ROOT + "/images/" + im2_file);
+	mask = Image.open(settings.STATIC_ROOT + "/images/" + mask_file);
+	
+	final_image = Image.composite(im2, im1, mask);
+	final_image.save(settings.STATIC_ROOT + "/images/" + "iterable2.png");
+	
+	return HttpResponse('Images combined')
+	

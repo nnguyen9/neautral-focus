@@ -16,7 +16,7 @@
         <script src="{% static 'js/fabric.min.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/caman.full.min.js' %}" type="text/javascript"></script>
 				<script src="{% static 'js/canvasmask.js' %}" type="text/javascript"></script>
-        <!-- <script src="{% static 'js/script.js' %}" type="text/javascript"></script> -->
+        <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
       {% endblock %}
     </head>
 
@@ -111,7 +111,7 @@
 			}
 
 			// HERE IS WHERE THE IMAGE SAVE IS CALLED WHEN THE BUTTON IS CLICKED
-			$('#prediction-button').click(saveImage)
+			$('#save-image-button').click(saveImage)
 			
 
 		});	
@@ -119,6 +119,8 @@
 	  </script>
       
       <button id="prediction-button" type="button">Get Prediction</button>
+
+      <button id="save-image-button" type="button">Save Image</button>
 
       <canvas id="myCanvas"></canvas>
 		

@@ -3,12 +3,6 @@ from django.http import HttpResponse
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.conf import settings
 
-import cStringIO
-from PIL import Image
-
-import re
-import os, base64
-
 # Create your views here.
 def index(request):
 	return render(request, 'main/index.html', {})

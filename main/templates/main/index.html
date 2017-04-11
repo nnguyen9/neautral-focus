@@ -18,70 +18,22 @@
 	        	csrf_token: "{{csrf_token}}",
 	        	save_image_url: "{% url 'save_image' %}",
 	        	combine_images_url: "{% url 'combine_images' %}",
+	        	static_foo_img: "{% static 'images/foo.png' %}",
+	        	static_iterable: "{% static 'images/iterable3.png' %}"
 	        }
+	        console.log(Global.static_iterable)
         </script>
         <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
       {% endblock %}
     </head>
 
-    <body>
-		
-	  <script>
-		$(document).ready(function() {
-			
-			var $pred = $('#prediction-button');
-
-			// Here is where we put to run after the document has loaded
-
-			var canvas = document.getElementById('myCanvas');
-			var ctx = canvas.getContext('2d');
-			var img = new Image();
-
-			// Loads the initial image
-			loadImage = function(src){
-
-				img.crossOrigin = '';
-				img.src = src;
-
-				img.onload = function() {
-					canvas.width = img.width;
-					canvas.height = img.height;
-					ctx.drawImage(img, 0, 0, img.width, img.height);
-				}
-			}
-			
-			loadImage("{% static 'images/foo.png' %}");
-			
-			combine_images = function(e, image = "foo.png", mask = "mask.png") {
-				
-				$.ajax({
-					type: "POST",
-					url: "{% url 'combine_images' %}",
-					data:{
-						csrfmiddlewaretoken: '{{ csrf_token }}',
-						'image_file': image,
-						'mask_file': mask,
-					},
-					success: function(data) {
-						loadImage("{% static 'images/iterable2.png' %}");
-					}
-				});
-			}
-
-			// HERE IS WHERE THE IMAGE SAVE IS CALLED WHEN THE BUTTON IS CLICKED
-			$('#save-image-button').click(combine_images)
-		});	
-		
-	  </script>
-
-			
-      
+    <body>	
       <button id="prediction-button" type="button">Get Prediction</button>
 
       <button id="save-image-button" type="button">Save Image</button>
 
       <canvas id="myCanvas"></canvas>
-	  	<canvas id="glCanvas"></canvas>
+	  <canvas id="glCanvas"></canvas>
     </body>
 
 </html>

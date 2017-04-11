@@ -46,18 +46,21 @@ def combine_images(request):
 	mask = mask.resize((1200, 801), Image.ANTIALIAS)
 
 	mask.save(settings.STATIC_ROOT + "/images/mask_resize.png")
-# BLUR - use GaussianBlur(50) instead
-# CONTOUR - Looks like a sketch
-# EMBOSS - Like plastic wrap or something
-# FIND_EDGES - Highlights edges only
-# SHARPEN
+	# BLUR - use GaussianBlur(50) instead
+	# CONTOUR - Looks like a sketch
+	# EMBOSS - Like plastic wrap or something
+	# FIND_EDGES - Highlights edges only
+	# SHARPEN
 	
 	mask = mask.filter(ImageFilter.GaussianBlur(50))
 	
 	final_image = Image.composite(filtered, image, mask)
-	final_image.save(settings.STATIC_ROOT + "/images/" + "iterable3.png")
+
+	final_loc = settings.STATIC_ROOT + "/images/" + "iterable3.png"
+
+	final_image.save(final_loc)
 	
-	return HttpResponse('Images combined')
+	return HttpResponse(final_loc)
 	
 	
 def blur(request):

@@ -81,7 +81,7 @@ $(document).ready(function() {
                         
                     'void main(void) {' +
                        ' gl_Position = vec4(coordinates, 1.0);' +
-                       'gl_PointSize = 10.0;'+
+                       'gl_PointSize = 100.0;'+
                     '}';
                  
                 // Create a vertex shader object
@@ -163,9 +163,54 @@ $(document).ready(function() {
         .begin()
         .showPredictionPoints(true); // shows a square every 100 milliseconds where current prediction is 
 
+    // Here is where we put to run after the document has loaded
+    var ctx = imgcanvas.getContext('2d');
+    var img = new Image();
+
+    // Loads the initial image
+    loadImage = function(src){
+
+        img.crossOrigin = '';
+        img.src = src + "?" + new Date().getTime();
+
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            imgcanvas.width = img.width;
+            imgcanvas.height = img.height;
+            ctx.drawImage(img, 0, 0, img.width, img.height);
+        }
+    }
+
+    loadImage(Global.static_foo_img);
+
+    // combine_images = function(e, image = "foo.png", mask = "mask.png") {
+        
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "{% url 'combine_images' %}",
+    //         data:{
+    //             csrfmiddlewaretoken: '{{ csrf_token }}',
+    //             'image_file': image,
+    //             'mask_file': mask,
+    //         },
+    //         success: function(data) {
+    //             loadImage("{% static 'images/iterable2.png' %}");
+    //         }
+    //     });
+    // }
+
+    // HERE IS WHERE THE IMAGE SAVE IS CALLED WHEN THE BUTTON IS CLICKED
+    // $('#save-image-button').click(combine_images)
+
+    var first = true
+
+
     $('#prediction-button').click(function() {
+        // Gets data url for mask
         imageUrl = canvas.toDataURL().replace("data:image/png;base64,", "");
 
+        // Passes the mask to backennd to be saved
         $.post(Global.save_image_url, {
             csrfmiddlewaretoken: Global.csrf_token,
             image: imageUrl,
@@ -174,16 +219,21 @@ $(document).ready(function() {
             alert(data)
         })
 
+        // Pass images for combining
         $.post(Global.combine_images_url, {
             csrfmiddlewaretoken: Global.csrf_token,
-            image_file: "foo.png",
+            image_file: first ? "foo.png" : "iterable3.png",
             mask_file: "test_mask.png"
         }, function(data) {
-            alert(data)
+            console.log("Image combined!")
+            loadImage(Global.static_iterable)
+
+            first = false
+            predictionPoints = []
+            webgazer.resume()
         })        
 
-        predictionPoints = []
-        webgazer.resume()
+        
     })
     
 });

@@ -1,0 +1,10 @@
+.circle:before {
+  content: ' \25CF';
+  font-size: 50px;
+}
+
+.circle {
+	display: inline-block;
+	margin: 60px 66px;
+}
+

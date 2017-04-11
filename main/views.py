@@ -13,6 +13,9 @@ import os, base64
 def home(request):
 	return render(request, 'main/home.html', {})
 
+def calibrate(request):
+	return render(request, 'main/calibrate.html', {})
+
 # Create your views here.
 def index(request):
 	return render(request, 'main/index.html', {})
@@ -21,13 +24,13 @@ def save_image(request):
 	imageURI = request.POST.get('image')
 	file_name = request.POST.get('file_name')
 
-	# pic.seek(0)
+	tempimg = cStringIO.StringIO(imageURI.decode('base64'))
+
+	image = Image.open(tempimg)
+
 	loc = settings.STATIC_ROOT + "/images/" + file_name
 
-	img_data = imageURI.decode("base64")
-	img_file = open(loc, "wb")
-	img_file.write(img_data)
-	img_file.close()
+	image.save(loc)
 
 	return HttpResponse('Image saved to: ' + loc)
 
@@ -38,8 +41,11 @@ def combine_images(request):
 	image = Image.open(settings.STATIC_ROOT + "/images/" + image_file)
 	mask = Image.open(settings.STATIC_ROOT + "/images/" + mask_file)
 	
-	filtered = image.filter(ImageFilter.SHARPEN).filter(ImageFilter.SHARPEN).filter(ImageFilter.SHARPEN).filter(ImageFilter.SHARPEN)
+	filtered = image.filter(ImageFilter.GaussianBlur(50))
 	
+	mask = mask.resize((1200, 801), Image.ANTIALIAS)
+
+	mask.save(settings.STATIC_ROOT + "/images/mask_resize.png")
 # BLUR - use GaussianBlur(50) instead
 # CONTOUR - Looks like a sketch
 # EMBOSS - Like plastic wrap or something
@@ -48,8 +54,8 @@ def combine_images(request):
 	
 	mask = mask.filter(ImageFilter.GaussianBlur(50))
 	
-	final_image = Image.composite(image, filtered, mask)
-	final_image.save(settings.STATIC_ROOT + "/images/" + "iterable2.png")
+	final_image = Image.composite(filtered, image, mask)
+	final_image.save(settings.STATIC_ROOT + "/images/" + "iterable3.png")
 	
 	return HttpResponse('Images combined')
 	

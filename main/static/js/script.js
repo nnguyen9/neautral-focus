@@ -31,7 +31,7 @@ $(document).ready(function() {
 
     //Define collection time here
     numVertices = 100;
-    gl = canvas.getContext('experimental-webgl');
+    gl = canvas.getContext('experimental-webgl', {preserveDrawingBuffer: true});
     var xin;
     var yin;
 
@@ -59,101 +59,101 @@ $(document).ready(function() {
                 //Stop gathering points to render scene
                 webgazer.pause()
 
-         //Do Rendering
-         // Create an empty buffer object to store the vertex buffer
-         var vertex_buffer = gl.createBuffer();
+                //Do Rendering
+                // Create an empty buffer object to store the vertex buffer
+                var vertex_buffer = gl.createBuffer();
 
-         //Bind appropriate array buffer to it
-         gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-      
-         // Pass the vertex data to the buffer
-         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(predictionPoints), gl.STATIC_DRAW);
+                //Bind appropriate array buffer to it
+                gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+              
+                // Pass the vertex data to the buffer
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(predictionPoints), gl.STATIC_DRAW);
 
-         // Unbind the buffer
-         gl.bindBuffer(gl.ARRAY_BUFFER, null);
+                // Unbind the buffer
+                gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
 
-         /*=========================Shaders========================*/
-      
-         // vertex shader source code
-         var vertCode =
-            'attribute vec3 coordinates;' +
-                
-            'void main(void) {' +
-               ' gl_Position = vec4(coordinates, 1.0);' +
-               'gl_PointSize = 2.0;'+
-            '}';
+                /*=========================Shaders========================*/
+              
+                // vertex shader source code
+                var vertCode =
+                    'attribute vec3 coordinates;' +
+                        
+                    'void main(void) {' +
+                       ' gl_Position = vec4(coordinates, 1.0);' +
+                       'gl_PointSize = 10.0;'+
+                    '}';
+                 
+                // Create a vertex shader object
+                var vertShader = gl.createShader(gl.VERTEX_SHADER);
+
+                // Attach vertex shader source code
+                gl.shaderSource(vertShader, vertCode);
+
+                // Compile the vertex shader
+                gl.compileShader(vertShader);
+
+                // fragment shader source code
+                var fragCode =
+                    'void main(void) {' +
+                       ' gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);' +
+                    '}';
+                 
+                // Create fragment shader object
+                var fragShader = gl.createShader(gl.FRAGMENT_SHADER);
+
+                // Attach fragment shader source code
+                gl.shaderSource(fragShader, fragCode);
+              
+                // Compile the fragmentt shader
+                gl.compileShader(fragShader);
+
+                // Create a shader program object to store
+                // the combined shader program
+                var shaderProgram = gl.createProgram();
+
+                // Attach a vertex shader
+                gl.attachShader(shaderProgram, vertShader); 
          
-         // Create a vertex shader object
-         var vertShader = gl.createShader(gl.VERTEX_SHADER);
+                // Attach a fragment shader
+                gl.attachShader(shaderProgram, fragShader);
 
-         // Attach vertex shader source code
-         gl.shaderSource(vertShader, vertCode);
+                // Link both programs
+                gl.linkProgram(shaderProgram);
 
-         // Compile the vertex shader
-         gl.compileShader(vertShader);
+                // Use the combined shader program object
+                gl.useProgram(shaderProgram);
 
-         // fragment shader source code
-         var fragCode =
-            'void main(void) {' +
-               ' gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);' +
-            '}';
+                /*======== Associating shaders to buffer objects ========*/
+
+                // Bind vertex buffer object
+                gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+
+                // Get the attribute location
+                var coord = gl.getAttribLocation(shaderProgram, "coordinates");
+
+                // Point an attribute to the currently bound VBO
+                gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
+
+                // Enable the attribute
+                gl.enableVertexAttribArray(coord);
+
+                /*============= Drawing the primitive ===============*/
+
+                // Clear the canvas
+                gl.clearColor(1.0, 1.0, 1.0, 0.0);
+
+                // Enable the depth test
+                gl.enable(gl.DEPTH_TEST);
          
-         // Create fragment shader object
-         var fragShader = gl.createShader(gl.FRAGMENT_SHADER);
+                // Clear the color buffer bit
+                gl.clear(gl.COLOR_BUFFER_BIT);
 
-         // Attach fragment shader source code
-         gl.shaderSource(fragShader, fragCode);
-      
-         // Compile the fragmentt shader
-         gl.compileShader(fragShader);
+                // Set the view port
+                gl.viewport(0,0,canvas.width,canvas.height);
 
-         // Create a shader program object to store
-         // the combined shader program
-         var shaderProgram = gl.createProgram();
-
-         // Attach a vertex shader
-         gl.attachShader(shaderProgram, vertShader); 
- 
-         // Attach a fragment shader
-         gl.attachShader(shaderProgram, fragShader);
-
-         // Link both programs
-         gl.linkProgram(shaderProgram);
-
-         // Use the combined shader program object
-         gl.useProgram(shaderProgram);
-
-         /*======== Associating shaders to buffer objects ========*/
-
-         // Bind vertex buffer object
-         gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-
-         // Get the attribute location
-         var coord = gl.getAttribLocation(shaderProgram, "coordinates");
-
-         // Point an attribute to the currently bound VBO
-         gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
-
-         // Enable the attribute
-         gl.enableVertexAttribArray(coord);
-
-         /*============= Drawing the primitive ===============*/
-
-         // Clear the canvas
-         gl.clearColor(1.0, 1.0, 1.0, 0.0);
-
-         // Enable the depth test
-         gl.enable(gl.DEPTH_TEST);
- 
-         // Clear the color buffer bit
-         gl.clear(gl.COLOR_BUFFER_BIT);
-
-         // Set the view port
-         gl.viewport(0,0,canvas.width,canvas.height);
-
-         // Draw the triangle
-         gl.drawArrays(gl.POINTS, 0, numVertices);
+                // Draw the triangle
+                gl.drawArrays(gl.POINTS, 0, numVertices);
             }
             else {
                 //This shouldn't happen
@@ -164,14 +164,28 @@ $(document).ready(function() {
         .showPredictionPoints(true); // shows a square every 100 milliseconds where current prediction is 
 
     $('#prediction-button').click(function() {
-        console.log(predictionPoints)
+        imageUrl = canvas.toDataURL().replace("data:image/png;base64,", "");
+
+        $.post(Global.save_image_url, {
+            csrfmiddlewaretoken: Global.csrf_token,
+            image: imageUrl,
+            file_name: "test_mask.png"
+        }, function(data) {
+            alert(data)
+        })
+
+        $.post(Global.combine_images_url, {
+            csrfmiddlewaretoken: Global.csrf_token,
+            image_file: "foo.png",
+            mask_file: "test_mask.png"
+        }, function(data) {
+            alert(data)
+        })        
+
         predictionPoints = []
-        console.log('Data points reset. Webgazer resumed')
         webgazer.resume()
     })
-
     
-
 });
 
 

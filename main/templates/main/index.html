@@ -13,9 +13,6 @@
       {% block js %}
         <!-- WebGazer.js library -->
         <script src="{% static 'js/webgazer.js' %}" type="text/javascript"></script>
-        <script src="{% static 'js/fabric.min.js' %}" type="text/javascript"></script>
-        <script src="{% static 'js/caman.full.min.js' %}" type="text/javascript"></script>
-				<script src="{% static 'js/canvasmask.js' %}" type="text/javascript"></script>
         <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
       {% endblock %}
     </head>
@@ -46,30 +43,6 @@
 				}
 			}
 			
-//			$pred.on('click', function(e) {
-//				var dataURL = canvas.toDataURL("image/png");
-//			});
-			
-			// Event is here because the click of jquery automatically sends the first parameter as an event object
-			// If no longer using the click then remove the first parameter
-//			saveImage = function(file_name) {
-//				
-//				imageData = canvas.toDataURL();
-//				imageDataSend = imageData.replace("data:image/png;base64,", "")
-//				
-//				$.ajax({
-//					type: "POST",
-//					url: "{% url 'save_image' %}",
-//					data:{
-//						'image': imageDataSend,
-//						csrfmiddlewaretoken: '{{ csrf_token }}',
-//						'file_name': file_name
-//					},
-//					success: function(data) {
-//					}
-//				});
-//			}
-			
 			loadImage("{% static 'images/foo.png' %}");
 			
 			combine_images = function(e, image = "foo.png", mask = "mask.png") {
@@ -87,81 +60,6 @@
 					}
 				});
 			}
-			
-			
-//			blur = function(file_name) {
-//				
-//				$.ajax({
-//					type: "POST",
-//					url: "{% url 'blur' %}",
-//					data:{
-//						csrfmiddlewaretoken: '{{ csrf_token }}',
-//						'im_file': file_name
-//					},
-//					success: function(data) {
-//					}
-//				});
-//			}
-//			
-//			blur("foo.png");
-//			
-//			// Applies the necessary filter and mask to the image
-//			updateImage = function(mask, filter){
-//				
-//				var filtered = document.createElement('img');
-//				filtered.src = filter;
-//				
-//				filtered.onload = function() {
-//					
-//					var newImg = document.createElement('img');
-//					newImg.src = img.src;
-//
-//					newImg.onload = function() {
-//						var width  = newImg.width;
-//						var height = newImg.height;
-//
-//						var masked = document.createElement('img');
-//						masked.src = mask;
-//						masked.onload = function() {
-//							canvas.width  = width;
-//							canvas.height = height;
-//
-//
-//							ctx.drawImage(masked, 0, 0, width, height);
-//							// To highlight low-focus: source-out
-//							// To detract from high focus: source-in
-//							ctx.globalCompositeOperation = 'source-out';
-//							ctx.drawImage(filtered, 0, 0);
-//							ctx.globalCompositeOperation = 'destination-over';
-//							ctx.drawImage(img, 0, 0);
-//
-//							img.src = canvas.toDataURL();
-//						}
-//					}
-//				}
-//				
-//				saveImage("image2.png");
-//			}
-//
-//			// Event is here because the click of jquery automatically sends the first parameter as an event object
-//			// If no longer using the click then remove the first parameter
-//			saveImage = function(event, file_name = 'image1.png') {
-//				
-//				imageData = canvas.toDataURL();
-//				imageDataSend = imageData.replace("data:image/png;base64,", "")
-//				
-//				$.ajax({
-//					type: "POST",
-//					url: "{% url 'save_image' %}",
-//					data:{
-//						'image': imageDataSend,
-//						csrfmiddlewaretoken: '{{ csrf_token }}',
-//						'file_name': file_name
-//					},
-//					success: function(data) {
-//					}
-//				});
-//			}
 
 			// HERE IS WHERE THE IMAGE SAVE IS CALLED WHEN THE BUTTON IS CLICKED
 			$('#save-image-button').click(combine_images)

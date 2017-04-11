@@ -15,9 +15,9 @@
 // });
 
 /*================Creating a canvas=================*/
-var canvas;
-var imgcanvas;
-var numVertices;
+var canvas;         //This is the OpenGL canvas
+var imgcanvas;      //This is the canvas in the html
+var numVertices;    //Number of vertices we want to collect
 var gl; 
       
 /*==========Defining and storing the geometry=======*/
@@ -28,12 +28,15 @@ $(document).ready(function() {
     var predictionPoints = []
     canvas = document.getElementById('glCanvas')
     imgcanvas = document.getElementById('myCanvas')
+
+    //Define collection time here
     numVertices = 100;
     gl = canvas.getContext('experimental-webgl');
     var xin;
     var yin;
 
 
+    //Loop for data collection
     webgazer.setRegression('ridge') /* currently must set regression and tracker */
         .setTracker('clmtrackr')
         .setGazeListener(function(data, clock) {

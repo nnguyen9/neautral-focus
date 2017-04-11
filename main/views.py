@@ -10,6 +10,9 @@ from PIL import ImageFilter
 import re
 import os, base64
 
+def home(request):
+	return render(request, 'main/home.html', {})
+
 # Create your views here.
 def index(request):
 	return render(request, 'main/index.html', {})
@@ -28,18 +31,39 @@ def save_image(request):
 
 	return HttpResponse('Image saved to: ' + loc)
 
-# Combine the images and save as the first image
 def combine_images(request):
-	im1_file = request.POST.get('im1_file');
-	im2_file = request.POST.get('im2_file');
-	mask_file = request.POST.get('mask_file');
+	image_file = request.POST.get('image_file')
+	mask_file = request.POST.get('mask_file')
 	
-	im1 = Image.open(settings.STATIC_ROOT + "/images/" + im1_file);
-	im2 = Image.open(settings.STATIC_ROOT + "/images/" + im2_file);
-	mask = Image.open(settings.STATIC_ROOT + "/images/" + mask_file);
+	image = Image.open(settings.STATIC_ROOT + "/images/" + image_file)
+	mask = Image.open(settings.STATIC_ROOT + "/images/" + mask_file)
 	
-	final_image = Image.composite(im2, im1, mask);
-	final_image.save(settings.STATIC_ROOT + "/images/" + "iterable2.png");
+	filtered = image.filter(ImageFilter.SHARPEN).filter(ImageFilter.SHARPEN).filter(ImageFilter.SHARPEN).filter(ImageFilter.SHARPEN)
+	
+# BLUR - use GaussianBlur(50) instead
+# CONTOUR - Looks like a sketch
+# EMBOSS - Like plastic wrap or something
+# FIND_EDGES - Highlights edges only
+# SHARPEN
+	
+	mask = mask.filter(ImageFilter.GaussianBlur(50))
+	
+	final_image = Image.composite(image, filtered, mask)
+	final_image.save(settings.STATIC_ROOT + "/images/" + "iterable2.png")
 	
 	return HttpResponse('Images combined')
+	
+	
+def blur(request):
+	im_file = request.POST.get('im_file')
+	
+	image = Image.open(settings.STATIC_ROOT + "/images/" + im_file)
+	
+	image = image.filter(ImageFilter.GaussianBlur(50))
+	
+	image.save(settings.STATIC_ROOT + "/images/" + "blurred.png")
+	
+	return HttpResponse('Image blurred')
+	
+	
 	

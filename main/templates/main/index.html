@@ -28,12 +28,19 @@
     </head>
 
     <body>	
-      <button id="prediction-button" type="button">Get Prediction</button>
+      <button id="start-button" type="button">Start</button>
 
-      <button id="save-image-button" type="button">Save Image</button>
+      <button id="stop-button" type="button">Stop</button>
+      <button id="calibrate-button" type="button">Calibrate</button>
 
+      <div id="calibration-div">
+        <h3>Stare at each dot. Click on it after 1 second.</h3>
+        {% for i in "xxxxxxxxxxxxxxxxxxxxxxxxxxxx" %}
+          <div class="circle"></div>
+        {% endfor %}
+      </div>
       <canvas id="myCanvas"></canvas>
-	  <canvas id="glCanvas"></canvas>
+	    <canvas id="glCanvas"></canvas>
     </body>
 
 </html>

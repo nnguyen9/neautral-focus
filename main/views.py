@@ -42,8 +42,6 @@ def combine_images(request):
 	mask = Image.open(settings.STATIC_ROOT + "/images/" + mask_file)
 	
 	filtered = image.filter(ImageFilter.GaussianBlur(50))
-	
-	mask = mask.resize((1200, 801), Image.ANTIALIAS)
 
 	mask.save(settings.STATIC_ROOT + "/images/mask_resize.png")
 	# BLUR - use GaussianBlur(50) instead

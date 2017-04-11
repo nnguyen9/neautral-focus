@@ -35,11 +35,36 @@ $(document).ready(function() {
     var xin;
     var yin;
 
+    // Here is where we put to run after the document has loaded
+    var ctx = imgcanvas.getContext('2d');
+    var img = new Image();
+
+    var calibrating = false;
+
+    // Loads the initial image
+    loadImage = function(src){
+
+        img.crossOrigin = '';
+        img.src = src + "?" + new Date().getTime();
+
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            imgcanvas.width = img.width;
+            imgcanvas.height = img.height;
+            ctx.drawImage(img, 0, 0, img.width, img.height);
+        }
+    }
+
+    loadImage(Global.static_foo_img);
 
     //Loop for data collection
     webgazer.setRegression('ridge') /* currently must set regression and tracker */
         .setTracker('clmtrackr')
         .setGazeListener(function(data, clock) {
+            if (calibrating) {
+                return;
+            }
             if (predictionPoints.length < 3 * numVertices) {
                 if(data != null) {
                     if(data.x < imgcanvas.width && data.y < imgcanvas.height)
@@ -81,7 +106,7 @@ $(document).ready(function() {
                         
                     'void main(void) {' +
                        ' gl_Position = vec4(coordinates, 1.0);' +
-                       'gl_PointSize = 100.0;'+
+                       'gl_PointSize = 75.0;'+
                     '}';
                  
                 // Create a vertex shader object
@@ -154,59 +179,20 @@ $(document).ready(function() {
 
                 // Draw the triangle
                 gl.drawArrays(gl.POINTS, 0, numVertices);
+
+                combineImages()
             }
             else {
                 //This shouldn't happen
-                webgazer.pause()
+                // webgazer.pause()
+                console.log('SOMETHING BAD HAPPENED')
             }
         })
-        .begin()
         .showPredictionPoints(true); // shows a square every 100 milliseconds where current prediction is 
-
-    // Here is where we put to run after the document has loaded
-    var ctx = imgcanvas.getContext('2d');
-    var img = new Image();
-
-    // Loads the initial image
-    loadImage = function(src){
-
-        img.crossOrigin = '';
-        img.src = src + "?" + new Date().getTime();
-
-        img.onload = function() {
-            canvas.width = img.width;
-            canvas.height = img.height;
-            imgcanvas.width = img.width;
-            imgcanvas.height = img.height;
-            ctx.drawImage(img, 0, 0, img.width, img.height);
-        }
-    }
-
-    loadImage(Global.static_foo_img);
-
-    // combine_images = function(e, image = "foo.png", mask = "mask.png") {
-        
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "{% url 'combine_images' %}",
-    //         data:{
-    //             csrfmiddlewaretoken: '{{ csrf_token }}',
-    //             'image_file': image,
-    //             'mask_file': mask,
-    //         },
-    //         success: function(data) {
-    //             loadImage("{% static 'images/iterable2.png' %}");
-    //         }
-    //     });
-    // }
-
-    // HERE IS WHERE THE IMAGE SAVE IS CALLED WHEN THE BUTTON IS CLICKED
-    // $('#save-image-button').click(combine_images)
 
     var first = true
 
-
-    $('#prediction-button').click(function() {
+    var combineImages = function() {
         // Gets data url for mask
         imageUrl = canvas.toDataURL().replace("data:image/png;base64,", "");
 
@@ -232,10 +218,32 @@ $(document).ready(function() {
             predictionPoints = []
             webgazer.resume()
         })        
-
-        
-    })
+    }
     
+    $('button#start-button').click(function() {
+        webgazer.resume()
+    });
+
+    $('button#stop-button').click(function() {
+        webgazer.pause()
+    });    
+
+    $('button#calibrate-button').click(function() {
+        if (calibrating) {
+            // Stop calibrating
+
+            webgazer.pause()
+
+            calibrating = false
+            $('div#calibration-div').hide()
+        } else {
+            // Start calibration
+            calibrating = true;
+
+            webgazer.begin()
+            $('div#calibration-div').show()
+        }
+    });
 });
 
 

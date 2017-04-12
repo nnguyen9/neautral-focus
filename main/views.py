@@ -65,5 +65,14 @@ def blur(request):
 	
 	return HttpResponse('Image blurred')
 	
+
+def sharpen(request):
+	im_file = request.POST.get('im_file')
 	
+	image = Image.open(settings.STATIC_ROOT + "/images/" + im_file)
 	
+	image = image.filter(ImageFilter.SHARPEN).filter(ImageFilter.SHARPEN).filter(ImageFilter.SHARPEN).filter(ImageFilter.SHARPEN)
+	
+	image.save(settings.STATIC_ROOT + "/images/" + "blurred.png")
+	
+	return HttpResponse('Image sharpened')

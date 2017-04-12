@@ -7,5 +7,6 @@ urlpatterns = [
     url(r'^save_image/$', views.save_image, name='save_image'),
 	url(r'^combine_images/$', views.combine_images, name='combine_images'),
 	url(r'^blur/$', views.blur, name='blur'),
+	url(r'^sharpen/$', views.sharpen, name='sharpen'),
 	url(r'^home/$', views.home, name='home'),
 ]

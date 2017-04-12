@@ -6,9 +6,12 @@ from django.conf import settings
 import cStringIO
 from PIL import Image
 from PIL import ImageFilter
+from PIL import ImageEnhance
 
 import re
 import os, base64
+
+filter_count = 0;
 
 def index(request):
 	return render(request, 'main/index.html', {})
@@ -47,14 +50,26 @@ def save_image(request):
 	return HttpResponse('Image saved to: ' + loc)
 
 def combine_images(request):
+	global filter_count
+	f = filter_count%3;
+	
 	image_file = request.POST.get('image_file')
 	mask_file = request.POST.get('mask_file')
 	
 	image = Image.open(settings.STATIC_ROOT + "/images/" + image_file)
 	mask = Image.open(settings.STATIC_ROOT + "/images/" + mask_file)
 	
-	blurred = image.filter(ImageFilter.GaussianBlur(70))
-	sharpened = image.filter(ImageFilter.DETAIL)
+	if f == 0:
+		detract = image.filter(ImageFilter.GaussianBlur(100))
+		enhance = image.filter(ImageFilter.DETAIL)
+	else:
+		if f == 1:
+			detract = ImageEnhance.Contrast(image).enhance(0.5)
+			enhance = ImageEnhance.Contrast(image).enhance(1.1)
+		else:
+			detract = ImageEnhance.Brightness(image).enhance(0.5)
+			enhance = ImageEnhance.Brightness(image).enhance(1.03)
+			
 
 	mask.save(settings.STATIC_ROOT + "/images/mask_resize.png")
 	# BLUR - use GaussianBlur(50) instead
@@ -65,11 +80,13 @@ def combine_images(request):
 	
 	mask = mask.filter(ImageFilter.GaussianBlur(50))
 	
-	final_image = Image.composite(blurred, sharpened, mask)
+	final_image = Image.composite(detract, enhance, mask)
 
 	final_loc = settings.STATIC_ROOT + "/images/" + "iterable3.png"
 
 	final_image.save(final_loc)
+	
+	filter_count = filter_count + 1;
 	
 	return HttpResponse(final_loc)
 	

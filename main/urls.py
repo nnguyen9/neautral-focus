@@ -9,4 +9,5 @@ urlpatterns = [
 	url(r'^blur/$', views.blur, name='blur'),
 	url(r'^$', views.index, name='index'),
 	url(r'^calibrate/$', views.calibrate, name='calibrate'),
+	url(r'^compare/$', views.compare, name='compare'),
 ]

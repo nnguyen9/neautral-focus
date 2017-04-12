@@ -1,0 +1,28 @@
+{% load staticfiles %}
+<html lang="en">
+    <head>
+      <title>{% block title %}Neutral Focus{% endblock %}</title>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r70/three.min.js"></script>
+      {% block css %}    
+        <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+      {% endblock %}
+    </head>
+
+    <body id="compareBody">
+		
+	<div class="imgContainer" style="width: 50%">
+		<p>Original Image</p>
+        <img src="{% static 'images/test_resized.png' %}" width="100%"/>
+    </div>
+    <div class="imgContainer" style="width:50%">
+		<p>Neutral focus image</p>
+        <img src="{% static 'images/iterable3.png' %}" width="100%"/>
+    </div>
+		
+    </body>
+
+</html>

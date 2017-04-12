@@ -21,6 +21,9 @@ def index(request):
 def calibrate(request):
 	return render(request, 'main/calibrate.html', {})
 
+def compare(request):
+	return render(request, 'main/compare.html', {})
+
 # Create your views here.
 def main(request):
 	file_name = request.GET.get('file_name')

@@ -42,3 +42,7 @@ body#homeBody {
 	background: radial-gradient(circle, black, gray);
 	text-align: center;
 }
+
+.imgContainer{
+    float:left;
+}

@@ -56,7 +56,7 @@ $(document).ready(function() {
         }
     }
 
-    loadImage(Global.static_foo_img);
+    loadImage(Global.static_test_image);
 
     //Loop for data collection
     webgazer.setRegression('ridge') /* currently must set regression and tracker */
@@ -202,13 +202,13 @@ $(document).ready(function() {
             image: imageUrl,
             file_name: "test_mask.png"
         }, function(data) {
-            alert(data)
+            console.log(data)
         })
 
         // Pass images for combining
         $.post(Global.combine_images_url, {
             csrfmiddlewaretoken: Global.csrf_token,
-            image_file: first ? "foo.png" : "iterable3.png",
+            image_file: first ? "test_resized.png" : "iterable3.png",
             mask_file: "test_mask.png"
         }, function(data) {
             console.log("Image combined!")
@@ -231,6 +231,7 @@ $(document).ready(function() {
     $('button#calibrate-button').click(function() {
         if (calibrating) {
             // Stop calibrating
+            $(this).text('Start Calibration')
 
             webgazer.pause()
 
@@ -238,6 +239,8 @@ $(document).ready(function() {
             $('div#calibration-div').hide()
         } else {
             // Start calibration
+            $(this).text('Stop Calibration')
+
             calibrating = true;
 
             webgazer.begin()

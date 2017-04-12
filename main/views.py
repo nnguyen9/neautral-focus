@@ -10,15 +10,23 @@ from PIL import ImageFilter
 import re
 import os, base64
 
-def home(request):
-	return render(request, 'main/home.html', {})
+def index(request):
+	return render(request, 'main/index.html', {})
 
 def calibrate(request):
 	return render(request, 'main/calibrate.html', {})
 
 # Create your views here.
-def index(request):
-	return render(request, 'main/index.html', {})
+def main(request):
+	file_name = request.GET.get('file_name')
+	image = Image.open(settings.STATIC_ROOT + "/images/" + file_name)
+
+	resized_image = image.resize((1200, 800), Image.ANTIALIAS)
+
+	test_image_name = "test_resized.png"
+	resized_image.save(settings.STATIC_ROOT + "/images/" + test_image_name)
+
+	return render(request, 'main/main.html', {'test_image_name': test_image_name})
 
 def save_image(request):
 	imageURI = request.POST.get('image')

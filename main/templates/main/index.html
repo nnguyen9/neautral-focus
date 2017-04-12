@@ -11,36 +11,21 @@
         <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
       {% endblock %}
       {% block js %}
-        <!-- WebGazer.js library -->
-        <script src="{% static 'js/webgazer.js' %}" type="text/javascript"></script>
         <script>
-	        var Global = {
-	        	csrf_token: "{{csrf_token}}",
-	        	save_image_url: "{% url 'save_image' %}",
-	        	combine_images_url: "{% url 'combine_images' %}",
-	        	static_foo_img: "{% static 'images/foo.png' %}",
-	        	static_iterable: "{% static 'images/iterable3.png' %}"
-	        }
-	        console.log(Global.static_iterable)
+          $(document).ready(function() {
+            $('button#begin').click(function() {
+              window.location.href = "{% url 'main' %}?file_name=testHD.jpg"
+            })
+          });
         </script>
-        <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
       {% endblock %}
     </head>
 
-    <body>	
-      <button id="start-button" type="button">Start</button>
-
-      <button id="stop-button" type="button">Stop</button>
-      <button id="calibrate-button" type="button">Calibrate</button>
-
-      <div id="calibration-div">
-        <h3>Stare at each dot. Click on it after 1 second.</h3>
-        {% for i in "xxxxxxxxxxxxxxxxxxxxxxxxxxxx" %}
-          <div class="circle"></div>
-        {% endfor %}
-      </div>
-      <canvas id="myCanvas"></canvas>
-	    <canvas id="glCanvas"></canvas>
+    <body id="homeBody">
+		
+		<h1>Neutral Focus</h1>
+    <button id="begin">Begin</button>
+		
     </body>
 
 </html>

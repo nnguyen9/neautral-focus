@@ -53,7 +53,8 @@ def combine_images(request):
 	image = Image.open(settings.STATIC_ROOT + "/images/" + image_file)
 	mask = Image.open(settings.STATIC_ROOT + "/images/" + mask_file)
 	
-	filtered = image.filter(ImageFilter.GaussianBlur(50))
+	blurred = image.filter(ImageFilter.GaussianBlur(70))
+	sharpened = image.filter(ImageFilter.DETAIL)
 
 	mask.save(settings.STATIC_ROOT + "/images/mask_resize.png")
 	# BLUR - use GaussianBlur(50) instead
@@ -64,7 +65,7 @@ def combine_images(request):
 	
 	mask = mask.filter(ImageFilter.GaussianBlur(50))
 	
-	final_image = Image.composite(filtered, image, mask)
+	final_image = Image.composite(blurred, sharpened, mask)
 
 	final_loc = settings.STATIC_ROOT + "/images/" + "iterable3.png"
 

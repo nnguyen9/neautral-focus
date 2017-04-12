@@ -19,6 +19,10 @@ def calibrate(request):
 # Create your views here.
 def main(request):
 	file_name = request.GET.get('file_name')
+
+	if not file_name:
+		file_name = "foo.png"
+
 	image = Image.open(settings.STATIC_ROOT + "/images/" + file_name)
 
 	resized_image = image.resize((1200, 800), Image.ANTIALIAS)

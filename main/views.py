@@ -4,9 +4,11 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.conf import settings
 
 import cStringIO
+import math
 from PIL import Image
 from PIL import ImageFilter
 from PIL import ImageEnhance
+
 
 import re
 import os, base64
@@ -61,14 +63,14 @@ def combine_images(request):
 	
 	if f == 0:
 		detract = image.filter(ImageFilter.GaussianBlur(100))
-		enhance = image.filter(ImageFilter.DETAIL)
+		enhance = ImageEnhance.Sharpness(image).enhance(2*math.pow(0.8,filter_count))
 	else:
 		if f == 1:
 			detract = ImageEnhance.Contrast(image).enhance(0.5)
-			enhance = ImageEnhance.Contrast(image).enhance(1.1)
+			enhance = ImageEnhance.Contrast(image).enhance(0.2*math.pow(0.8,filter_count)+1)
 		else:
 			detract = ImageEnhance.Brightness(image).enhance(0.5)
-			enhance = ImageEnhance.Brightness(image).enhance(1.03)
+			enhance = ImageEnhance.Brightness(image).enhance(0.2*math.pow(0.8,filter_count)+1)
 			
 
 	mask.save(settings.STATIC_ROOT + "/images/mask_resize.png")

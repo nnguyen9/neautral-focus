@@ -63,14 +63,14 @@ def combine_images(request):
 	
 	if f == 0:
 		detract = image.filter(ImageFilter.GaussianBlur(100))
-		enhance = ImageEnhance.Sharpness(image).enhance(2*math.pow(0.6,filter_count))
+		enhance = ImageEnhance.Sharpness(image).enhance(2*math.pow(0.99,filter_count))
 	else:
 		if f == 1:
 			detract = ImageEnhance.Contrast(image).enhance(0.5)
-			enhance = ImageEnhance.Contrast(image).enhance(0.2*math.pow(0.6,filter_count)+1)
+			enhance = ImageEnhance.Contrast(image).enhance(0.2*math.pow(0.8,filter_count)+1)
 		else:
 			detract = ImageEnhance.Brightness(image).enhance(0.5)
-			enhance = ImageEnhance.Brightness(image).enhance(0.2*math.pow(0.6,filter_count)+1)
+			enhance = ImageEnhance.Brightness(image).enhance(0.2*math.pow(0.8,filter_count)+1)
 			
 
 	mask.save(settings.STATIC_ROOT + "/images/mask_resize.png")
@@ -80,7 +80,7 @@ def combine_images(request):
 	# FIND_EDGES - Highlights edges only
 	# SHARPEN
 	
-	mask = mask.filter(ImageFilter.GaussianBlur(50))
+	mask = mask.filter(ImageFilter.GaussianBlur(30))
 	
 	final_image = Image.composite(detract, enhance, mask)
 

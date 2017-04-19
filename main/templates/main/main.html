@@ -17,10 +17,11 @@
 	        var Global = {
 	        	csrf_token: "{{csrf_token}}",
 	        	save_image_url: "{% url 'save_image' %}",
+				scratch_away_url: "{% url 'scratch_away' %}",
 	        	combine_images_url: "{% url 'combine_images' %}",
 	        	static_foo_img: "{% static 'images/foo.png' %}",
 	        	static_iterable: "{% static 'images/iterable3.png' %}",
-            static_test_image: "{% static 'images/test_resized.png' %}",
+            	static_test_image: "{% static 'images/top.jpg' %}",
 	        }
 	        console.log(Global.static_iterable)
         </script>

@@ -180,7 +180,8 @@ $(document).ready(function() {
                 // Draw the triangle
                 gl.drawArrays(gl.POINTS, 0, numVertices);
 
-                combineImages()
+//               combineImages()
+				 scratchAway()
             }
             else {
                 //This shouldn't happen
@@ -219,6 +220,36 @@ $(document).ready(function() {
             webgazer.resume()
         })        
     }
+	
+	var scratchAway = function() {
+		
+		// Gets data url for mask
+        imageUrl = canvas.toDataURL().replace("data:image/png;base64,", "");
+
+        // Passes the mask to backennd to be saved
+        $.post(Global.save_image_url, {
+            csrfmiddlewaretoken: Global.csrf_token,
+            image: imageUrl,
+            file_name: "test_mask.png"
+        }, function(data) {
+            console.log(data)
+        })
+
+        // Pass images for scratching away
+        $.post(Global.scratch_away_url, {
+            csrfmiddlewaretoken: Global.csrf_token,
+            image_file1: first ? "top.jpg" : "iterable3.png",
+			image_file2: "bottom.jpg",
+            mask_file: "test_mask.png"
+        }, function(data) {
+            console.log("Image scratched!")
+            loadImage(Global.static_iterable)
+
+            first = false
+            predictionPoints = []
+            webgazer.resume()
+        })        
+	}
     
     $('button#start-button').click(function() {
         webgazer.resume()

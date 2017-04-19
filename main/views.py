@@ -94,6 +94,40 @@ def combine_images(request):
 	filter_count = filter_count + 1;
 	
 	return HttpResponse(final_loc)
+
+def scratch_away(request):
+	global filter_count
+	
+#	image_file1 = request.POST.get('image_file1')
+#	image_file2 = request.POST.get('image_file2')
+	mask_file = request.POST.get('mask_file')
+	
+	if filter_count == 0:
+		image1 = Image.open(settings.STATIC_ROOT + "/images/" + "top.jpg")
+	else:
+		image1 = Image.open(settings.STATIC_ROOT + "/images/" + "iterable3.png")
+		
+	if filter_count > 3:
+		image2 = Image.open(settings.STATIC_ROOT + "/images/" + "bottom.jpg")
+	else:
+		if filter_count > 6:
+			image2 = Image.open(settings.STATIC_ROOT + "/images/" + "bottom2.png")
+		else:
+			return HttpResponse("No more iterations")
+	
+	mask = Image.open(settings.STATIC_ROOT + "/images/" + mask_file)
+	
+	mask = mask.filter(ImageFilter.GaussianBlur(30))
+	
+	final_image = Image.composite(image2, image1, mask)
+	
+	final_loc = settings.STATIC_ROOT + "/images/" + "iterable3.png"
+	
+	final_image.save(final_loc)
+	
+	filter_count = filter_count + 1;
+	
+	return HttpResponse(final_loc)
 	
 	
 def blur(request):

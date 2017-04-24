@@ -1,0 +1,81 @@
+{% load staticfiles %}
+<html lang="en">
+    <head>
+      <title>{% block title %}Pick an Image{% endblock %}</title>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r70/three.min.js"></script>
+      {% block css %}    
+        <link href="{% static 'css/style_pick.css' %}" rel="stylesheet" type="text/css">
+      {% endblock %}
+      {% block js %}
+        <script>
+          $(document).ready(function() {
+            $('button#begin').click(function() {
+              window.location.href = "{% url 'main' %}?file_name=testHD.jpg"
+            })
+          });
+        </script>
+      {% endblock %}
+    </head>
+
+    <body>
+		<div id="portfolio">
+			<ul class="portfolio-grid">
+				<li>
+					<a href="#" class="animated flipInX">
+						<img src="http://placehold.it/200x200/1abc9c/FFFFFF" alt="img01"/>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="animated flipInX">
+						<img src="http://placehold.it/200x200/2ecc71/FFFFFF" alt="img01"/>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="animated flipInX">
+						<img src="http://placehold.it/200x200/3498db/FFFFFF" alt="img01"/>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="animated flipInX">
+						<img src="http://placehold.it/200x200/9b59b6/FFFFFF" alt="img01"/>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="animated flipInX">
+						<img src="http://placehold.it/200x200/16a085/FFFFFF" alt="img01"/>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="animated flipInX">
+						<img src="http://placehold.it/200x200/27ae60/FFFFFF" alt="img01"/>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="animated flipInX">
+						<img src="http://placehold.it/200x200/2980b9/FFFFFF" alt="img01"/>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="animated flipInX">
+						<img src="http://placehold.it/200x200/8e44ad/FFFFFF" alt="img01"/>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="animated flipInX">
+						<img src="http://placehold.it/200x200/f1c40f/FFFFFF" alt="img01"/>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="animated flipInX">
+						<img src="http://placehold.it/200x200/e67e22/FFFFFF" alt="img01"/>
+					</a>
+				</li>
+			</ul>
+		</div>	
+    </body>
+
+</html>

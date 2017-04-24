@@ -113,7 +113,7 @@ def scratch_away(request):
 	if filter_count < 3:
 		image2 = Image.open(settings.STATIC_ROOT + "/images/" + "bottom.jpg")
 	else:
-		if filter_count < 6:
+		if filter_count < 8:
 			image2 = Image.open(settings.STATIC_ROOT + "/images/" + "bottom2.png")
 		else:
 			return HttpResponse("No more iterations")

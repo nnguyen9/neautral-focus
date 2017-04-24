@@ -240,7 +240,8 @@ $(document).ready(function() {
             csrfmiddlewaretoken: Global.csrf_token,
             image_file1: first ? "top.jpg" : "iterable3.png",
 			image_file2: "bottom.jpg",
-            mask_file: "test_mask.png"
+            mask_file: "test_mask.png",
+            seq: Global.seq
         }, function(data) {
             console.log("Image scratched!")
             loadImage(Global.static_iterable)

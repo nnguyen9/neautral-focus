@@ -34,6 +34,8 @@ def main(request):
 	if not file_name:
 		file_name = "foo.png"
 
+	filter_count = 0
+
 	image = Image.open(settings.STATIC_ROOT + "/images/" + file_name)
 
 	resized_image = image.resize((1200, 800), Image.ANTIALIAS)
@@ -112,11 +114,10 @@ def scratch_away(request):
 		
 	if filter_count < 3:
 		image2 = Image.open(settings.STATIC_ROOT + "/images/" + "bottom.jpg")
+	elif filter_count < 8:
+		image2 = Image.open(settings.STATIC_ROOT + "/images/" + "bottom2.png")
 	else:
-		if filter_count < 8:
-			image2 = Image.open(settings.STATIC_ROOT + "/images/" + "bottom2.png")
-		else:
-			return HttpResponse("No more iterations")
+		return HttpResponse("No more iterations")
 	
 	mask = Image.open(settings.STATIC_ROOT + "/images/" + mask_file)
 	

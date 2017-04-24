@@ -29,21 +29,21 @@ def pick(request):
 
 # Create your views here.
 def main(request):
-	file_name = request.GET.get('file_name')
+	sequence = request.GET.get('seq')
 
-	if not file_name:
-		file_name = "foo.png"
+	if not sequence:
+		sequence = "frozen"
 
 	filter_count = 0
 
-	image = Image.open(settings.STATIC_ROOT + "/images/" + file_name)
+	image = Image.open(settings.STATIC_ROOT + "/images/" + sequence + "/top.jpg")
 
 	resized_image = image.resize((1200, 800), Image.ANTIALIAS)
 
 	test_image_name = "test_resized.png"
 	resized_image.save(settings.STATIC_ROOT + "/images/" + test_image_name)
 
-	return render(request, 'main/main.html', {'test_image_name': test_image_name})
+	return render(request, 'main/main.html', {'test_image_name': test_image_name, 'sequence': sequence})
 
 def save_image(request):
 	imageURI = request.POST.get('image')
@@ -106,16 +106,17 @@ def scratch_away(request):
 #	image_file1 = request.POST.get('image_file1')
 #	image_file2 = request.POST.get('image_file2')
 	mask_file = request.POST.get('mask_file')
+	sequence = request.POST.get('seq')
 	
 	if filter_count == 0:
-		image1 = Image.open(settings.STATIC_ROOT + "/images/" + "top.jpg")
+		image1 = Image.open(settings.STATIC_ROOT + "/images/" + sequence + "/top.jpg")
 	else:
 		image1 = Image.open(settings.STATIC_ROOT + "/images/" + "iterable3.png")
 		
 	if filter_count < 3:
-		image2 = Image.open(settings.STATIC_ROOT + "/images/" + "bottom.jpg")
+		image2 = Image.open(settings.STATIC_ROOT + "/images/" + sequence + "/bottom.jpg")
 	elif filter_count < 8:
-		image2 = Image.open(settings.STATIC_ROOT + "/images/" + "bottom2.png")
+		image2 = Image.open(settings.STATIC_ROOT + "/images/" + sequence + "/bottom2.png")
 	else:
 		return HttpResponse("No more iterations")
 	

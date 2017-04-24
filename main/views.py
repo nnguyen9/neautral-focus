@@ -30,6 +30,8 @@ def pick(request):
 # Create your views here.
 def main(request):
 	sequence = request.GET.get('seq')
+	
+	print sequence + "XXXXXXXX"
 
 	if not sequence:
 		sequence = "frozen"

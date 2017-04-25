@@ -6,11 +6,12 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-      <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r70/three.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
       {% block css %}    
-        <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'css/style_home.css' %}" rel="stylesheet" type="text/css">
       {% endblock %}
       {% block js %}
+		<script src="{% static 'js/home_page.js' %}" type="text/javascript"></script>
         <script>
           $(document).ready(function() {
             $('button#begin').click(function() {
@@ -21,10 +22,25 @@
       {% endblock %}
     </head>
 
-    <body id="homeBody">
-		
-		<h1>Neutral Focus</h1>
-    	<button id="begin">Begin</button>
+    <body>
+	
+		<div id="beginh">
+			<button id="begin" class="begin1 faded">Begin</button>
+			<button id= "begin" class="top">Begin</button>
+			<button id="begin" class="begin2 faded">Begin</button>
+			<button id="begin" class="begin3 faded">Begin</button>
+			<button id="begin" class="begin4 faded">Begin</button>
+			<button id="begin" class="begin5 faded">Begin</button>
+			<button id="begin" class="begin6 faded">Begin</button>
+		</div>
+		<div class="above-fold">
+		<div class="hero-section" id="hero-section-a">
+  			<img src="{% static 'images/home_page.jpg' %}" /></div>
+		<div class="hero-section" id="hero-section-b">
+  			<img src="{% static 'images/home_page.jpg' %}" /></div>
+		<div class="hero-section" id="hero-section-c">
+  			<img src="{% static 'images/home_page.jpg' %}" /></div>
+		</div>
 		
     </body>
 

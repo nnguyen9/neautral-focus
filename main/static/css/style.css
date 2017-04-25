@@ -1,6 +1,12 @@
+@font-face
+{
+    font-family: CenturyGothic;
+    src: url("GOTHIC.TTF") /* TTF file for CSS3 browsers */
+}
+
 .circle:before {
-  content: ' \25CF';
-  font-size: 50px;
+  	content: ' \25CF';
+  	font-size: 50px;
 }
 
 .circle {
@@ -28,21 +34,4 @@ h1 {
 	/*margin-left:20%;*/
 }
 
-button#begin {
-	font-size: 50px;
-	color: white;
-	background-color: gray;
-	/*margin-left:45%;*/
-}
 
-body#homeBody {
-	/*background-image: url(/static/images/blurryPavement.jpg);
-	background-repeat: no-repeat;
-	background-size: auto 100%;*/
-	background: radial-gradient(circle, black, gray);
-	text-align: center;
-}
-
-.imgContainer{
-    float:left;
-}

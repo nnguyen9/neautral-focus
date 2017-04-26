@@ -29,6 +29,8 @@ def pick(request):
 
 # Create your views here.
 def main(request):
+	global filter_count
+	
 	sequence = request.GET.get('seq')
 	
 	print sequence + "XXXXXXXX"

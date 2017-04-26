@@ -121,8 +121,10 @@ def scratch_away(request):
 		image2 = Image.open(settings.STATIC_ROOT + "/images/" + sequence + "/bottom.jpg")
 	elif filter_count < 8:
 		image2 = Image.open(settings.STATIC_ROOT + "/images/" + sequence + "/bottom2.png")
+	elif filter_count % 2 == 0:
+		image2 = Image.open(settings.STATIC_ROOT + "/images/" + sequence + "/bottom.jpg")
 	else:
-		return HttpResponse("No more iterations")
+		image2 = Image.open(settings.STATIC_ROOT + "/images/" + sequence + "/bottom2.png")
 	
 	mask = Image.open(settings.STATIC_ROOT + "/images/" + mask_file)
 	

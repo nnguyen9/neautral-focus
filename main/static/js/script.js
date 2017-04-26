@@ -189,7 +189,7 @@ $(document).ready(function() {
                 console.log('SOMETHING BAD HAPPENED')
             }
         })
-        .showPredictionPoints(true); // shows a square every 100 milliseconds where current prediction is 
+        .showPredictionPoints(false); // shows a square every 100 milliseconds where current prediction is 
 
     var first = true
 
@@ -265,7 +265,7 @@ $(document).ready(function() {
             // Stop calibrating
             $(this).text('Start Calibration')
 
-            webgazer.pause()
+            webgazer.showPredictionPoints(false).pause()
 
             calibrating = false
             $('div#calibration-div').hide()
@@ -275,7 +275,7 @@ $(document).ready(function() {
 
             calibrating = true;
 
-            webgazer.begin()
+            webgazer.showPredictionPoints(true).begin()
             $('div#calibration-div').show()
         }
     });

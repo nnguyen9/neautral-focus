@@ -24,7 +24,7 @@
 
     <body>
 	    <div class="container">
-				<h1>Select an image please</h1>
+				<h1>Select Image To Begin</h1>
 				<div id="portfolio">
 					<ul class="portfolio-grid">
 						<li>
@@ -38,43 +38,18 @@
 							</a>
 						</li>
 						<li>
-							<a href="#" class="animated flipInX">
-								<img src="http://placehold.it/200x200/3498db/FFFFFF" alt="img01"/>
+							<a href="{% url 'main' %}?seq=warhol"  class="animated flipInX">
+								<img src="{% static 'images/warhol/thumb.png' %}" alt="frozen_image"/>
 							</a>
 						</li>
 						<li>
-							<a href="#" class="animated flipInX">
-								<img src="http://placehold.it/200x200/9b59b6/FFFFFF" alt="img01"/>
+							<a href="{% url 'main' %}?seq=horror"  class="animated flipInX">
+								<img src="{% static 'images/horror/thumb.png' %}" alt="frozen_image"/>
 							</a>
 						</li>
 						<li>
-							<a href="#" class="animated flipInX">
-								<img src="http://placehold.it/200x200/16a085/FFFFFF" alt="img01"/>
-							</a>
-						</li>
-						<li>
-							<a href="#" class="animated flipInX">
-								<img src="http://placehold.it/200x200/27ae60/FFFFFF" alt="img01"/>
-							</a>
-						</li>
-						<li>
-							<a href="#" class="animated flipInX">
-								<img src="http://placehold.it/200x200/2980b9/FFFFFF" alt="img01"/>
-							</a>
-						</li>
-						<li>
-							<a href="#" class="animated flipInX">
-								<img src="http://placehold.it/200x200/8e44ad/FFFFFF" alt="img01"/>
-							</a>
-						</li>
-						<li>
-							<a href="#" class="animated flipInX">
-								<img src="http://placehold.it/200x200/f1c40f/FFFFFF" alt="img01"/>
-							</a>
-						</li>
-						<li>
-							<a href="#" class="animated flipInX">
-								<img src="http://placehold.it/200x200/e67e22/FFFFFF" alt="img01"/>
+							<a href="{% url 'main' %}?seq=bedroom"  class="animated flipInX">
+								<img src="{% static 'images/bedroom/thumb.png' %}" alt="frozen_image"/>
 							</a>
 						</li>
 					</ul>

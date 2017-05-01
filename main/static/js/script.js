@@ -251,14 +251,20 @@ $(document).ready(function() {
             webgazer.resume()
         })        
 	}
+
+    var started = false
     
     $('button#start-button').click(function() {
-        webgazer.resume()
+        if (started) {
+            $(this).text('Start')
+            webgazer.pause()
+            started = false
+        } else {
+            $(this).text('Stop')
+            webgazer.resume()
+            started = true
+        }
     });
-
-    $('button#stop-button').click(function() {
-        webgazer.pause()
-    });    
 
     $('button#calibrate-button').click(function() {
         if (calibrating) {

@@ -254,6 +254,8 @@ $(document).ready(function() {
 
     var started = false
     
+    $('button#start-button').hide()
+
     $('button#start-button').click(function() {
         if (started) {
             $(this).text('Start')
@@ -275,6 +277,7 @@ $(document).ready(function() {
 
             calibrating = false
             $('div#calibration-div').hide()
+            $('button#start-button').show()
         } else {
             // Start calibration
             $(this).text('Stop Calibration')
